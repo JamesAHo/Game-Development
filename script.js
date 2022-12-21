@@ -52,6 +52,8 @@ window.addEventListener('load', function() {
             this.x = this.game.width;
             this.speedX = Math.random() * -0.8 - 0.2;
             this.DeleteParticle = false;
+            this.loves = 5;
+            this.score = this.lives;
         }
         update(){
             this.x += this.speedX;
@@ -60,6 +62,8 @@ window.addEventListener('load', function() {
         draw(context){
             context.fillStyle = 'red';
             context.fillRect(this.x,this.y,this.width,this.height);
+            context.fillStyle = 'black';
+            this.fillText(this.lives,this.x, this.y)
         }
     }
     class Angler1 extends Enemy{
@@ -167,7 +171,11 @@ window.addEventListener('load', function() {
             }
             // Enemy
             this.enemies.forEach(enemy => {
-                enemy.update()
+                enemy.update();
+                // check for collisions
+                if(this.checkCollision(this.player, enemy)){
+                    enemy.DeleteParticle = true;
+                }
             });
             this.enemies = this.enemies.filter(enemy => !enemy.DeleteParticle);
             if(this.enemyTimer > this.enemyInterval && !this.gameOver){
@@ -176,20 +184,27 @@ window.addEventListener('load', function() {
             }else {
                 this.enemyTimer += deltaTime;
             }
-        };
+        }
         draw(context){
             this.player.draw(context);
             this.ui.draw(context);
             this.enemies.forEach(enemy => {
                 enemy.draw(context);
             })
-        };
+        }
         // add enemy 
         addEnemy(){
             this.enemies.push(new Angler1(this));
         }
         // check to see if enemy collide with player
-      
+        checkCollision(rect1,rect2){
+            return (
+                rect1.x < rect2.x + rect2.width &&
+                 rect1.x + rect1.width > rect2.x &&
+                 rect1.y < rect2.y + rect2.height &&
+                 rect1.height + rect1.y > rect2.y
+            )
+        }
     }
     const game = new GamepPlay(canvas.width, canvas.height);
     let lastTime = 0;
