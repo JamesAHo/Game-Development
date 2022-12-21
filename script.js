@@ -52,7 +52,7 @@ window.addEventListener('load', function() {
             this.x = this.game.width;
             this.speedX = Math.random() * -0.8 - 0.2;
             this.DeleteParticle = false;
-            this.loves = 5;
+            this.lives = 5;
             this.score = this.lives;
         }
         update(){
@@ -63,7 +63,8 @@ window.addEventListener('load', function() {
             context.fillStyle = 'red';
             context.fillRect(this.x,this.y,this.width,this.height);
             context.fillStyle = 'black';
-            this.fillText(this.lives,this.x, this.y)
+            context.font = '20 Helvetica'
+            context.fillText(this.lives,this.x, this.y)
         }
     }
     class Angler1 extends Enemy{
@@ -128,14 +129,19 @@ window.addEventListener('load', function() {
             this.game = game;
             this.fontSize = 25;
             this.family = 'Helvetica';
-            this.color = 'yellow';
+            this.color = 'white';
         }
         draw(context){
-            // ammo
+            context.save();
             context.fillStyle = this.color;
+            context.font = this.fontSize + 'px' + this.fontFamily;
+            // score
+            context.fillText('Score: ' + this.game.score, 20, 40);
+            // ammo
             for(let i = 0; i < this.game.ammo;i++){
                 context.fillRect(20 + 5 * i, 50, 3, 20);
             }
+            context.restore();
         }
        
     }
@@ -160,6 +166,8 @@ window.addEventListener('load', function() {
             this.ammoTimer = 0;
             this.ammoInterval = 500;
             this.gameOver = false;
+            this.score = 0;
+            this.winningScore = 10;
         }
         update(deltaTime) {
             this.player.update();
@@ -176,6 +184,20 @@ window.addEventListener('load', function() {
                 if(this.checkCollision(this.player, enemy)){
                     enemy.DeleteParticle = true;
                 }
+                // we want to check if projectile is collide with rect
+                this.player.projectiles.forEach(projectile => {
+                    if (this.checkCollision(projectile,enemy)){
+                        enemy.lives--;
+                        projectile.DeleteParticle = true;
+                        if(enemy.lives <= 0){
+                            enemy.DeleteParticle = true;
+                            this.score += enemy.score;
+                            if(this.score > this.winningScore){
+                                this.gameOver = true;
+                            }
+                        }
+                    }
+                })
             });
             this.enemies = this.enemies.filter(enemy => !enemy.DeleteParticle);
             if(this.enemyTimer > this.enemyInterval && !this.gameOver){
