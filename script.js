@@ -18,7 +18,9 @@ window.addEventListener('load', function() {
        }
        // methods
        update() {
-            this.y += this.speedY
+            if(this.game.keys.includes('ArrowUp')) this.speedY = -1;
+            else if(this.game.keys.includes('ArrowDown')) this.speedY = 1;
+            this.y += this.speedY;
        }
        draw(context){
             context.fillRect(this.x, this.y, this.width, this.height);
@@ -28,7 +30,22 @@ window.addEventListener('load', function() {
 
     }
     class InputHandler {
-
+        constructor(game) {
+            this.game = game;
+            window.addEventListener('keydown', e => {
+                if(((e.key === 'ArrowUp') || (e.key === 'ArrowDown')) && this.game.keys.indexOf(e.key) === -1){
+                    this.game.keys.push(e.key)
+                }
+                console.log(this.game.keys);
+            });
+            window.addEventListener('keyup', e => {
+                if(this.game.keys.indexOf(e.key) > -1) {
+                    this.game.keys.splice(this.game.keys.indexOf(e.key),1);
+            
+                }
+                console.log(this.game.keys);
+            })
+        }
     }
     class Projectile {
 
@@ -49,7 +66,12 @@ window.addEventListener('load', function() {
         constructor(width,height) {
             this.width = width;
             this.height = height;
+            // player object
             this.player = new Player(this);
+            // input object
+            this.input = new InputHandler(this);
+            // keep track all keys
+            this.keys = [];
         }
         update() {
             this.player.update();
