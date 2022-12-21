@@ -39,7 +39,7 @@ window.addEventListener('load', function() {
        }
        shootTop(){
             if(this.game.ammo > 0) {
-                this.projectiles.push(new Projectile(this.game, this.x, this.y));
+                this.projectiles.push(new Projectile(this.game, this.x + 80, this.y + 30));
                 console.log(this.projectiles);
                 this.game.ammo--;
             }
@@ -57,13 +57,15 @@ window.addEventListener('load', function() {
                 } else if( e.key === ' ') {
                     this.game.player.shootTop();
                 }
+                console.log(this.game.keys)
             });
             window.addEventListener('keyup', e => {
                 if(this.game.keys.indexOf(e.key) > -1) {
                     this.game.keys.splice(this.game.keys.indexOf(e.key),1);
-            
                 }
+                console.log(this.game.keys)
             })
+            
         }
     }
     class Projectile {
@@ -73,7 +75,7 @@ window.addEventListener('load', function() {
             this.y = y;
             this.width = 10;
             this.height = 3;
-            this.speed = 3;
+            this.speed = 2;
             this.DeleteParticle = false;
         }
         update(){
@@ -81,12 +83,12 @@ window.addEventListener('load', function() {
             if(this.x > this.game.width * 0.8) this.DeleteParticle = true;
         }
         draw(context) {
-            context.fillStyle = 'black';
+            context.fillStyle = 'yellow';
             context.fillRect(this.x, this.y, this.width, this.height);
         }
     }
     class Particle {
-
+ 
     }
     class Layer {
 
@@ -95,35 +97,64 @@ window.addEventListener('load', function() {
 
     }
     class UI {
-
+        constructor(game){
+            this.game = game;
+            this.fontSize = 25;
+            this.family = 'Helvetica';
+            this.color = 'yellow';
+        }
+        draw(context){
+            // ammo
+            context.fillStyle = this.color;
+            for(let i = 0; i < this.game.ammo;i++){
+                context.fillRect(20 + 5 * i, 50, 3, 20);
+            }
+        }
+       
     }
     class GamepPlay {
         constructor(width,height) {
             this.width = width;
             this.height = height;
-            // player object
+            // Player instance
             this.player = new Player(this);
-            // input object
+            // Input instance
             this.input = new InputHandler(this);
+            // UI instance
+            this.ui = new UI(this);
             // keep track all keys
             this.keys = [];
             this.ammo = 20;
+            this.maxAmmo = 50;
+            this.ammoTimer = 0;
+            this.ammoInterval = 500;
         }
-        update() {
+        update(deltaTime) {
             this.player.update();
+            if(this.ammoTimer > this.ammoInterval){
+                if(this.ammo < this.maxAmmo) this.ammo++;
+                this.ammoTimer = 0
+            } else {
+                this.ammoTimer += deltaTime;
+            }
         }
         draw(context){
             this.player.draw(context);
+            this.ui.draw(context);
+        
         }
     }
     const game = new GamepPlay(canvas.width, canvas.height);
+    let lastTime = 0;
     // create an animation loop
-    function animation(){
+    function animation(timeStamp){
+        const deltaTime = timeStamp - lastTime;
+        lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.update();
+        game.update(deltaTime);
         game.draw(ctx);
         // using existing window objet requestAnimationFrame
         requestAnimationFrame(animation)
     }
-    animation();
+    animation(0);
 });
