@@ -11,7 +11,7 @@ window.addEventListener('load', function() {
        constructor(game) {
             this.game = game;
             this.width = 120;
-            this.height = 190;
+            this.height = 195;
             this.x = 20;
             this.y = 100;
             this.speedY = 0;
@@ -59,4 +59,13 @@ window.addEventListener('load', function() {
         }
     }
     const game = new GamepPlay(canvas.width, canvas.height);
+    // create an animation loop
+    function animation(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        game.update();
+        game.draw(ctx);
+        // using existing window objet requestAnimationFrame
+        requestAnimationFrame(animation)
+    }
+    animation();
 });
