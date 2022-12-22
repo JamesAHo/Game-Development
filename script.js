@@ -80,7 +80,7 @@ window.addEventListener('load', function() {
         constructor(game) {
             this.game = game;
             window.addEventListener('keydown', e => {
-                if(((e.key === 'ArrowUp') || (e.key === 'ArrowDown')) && this.game.keys.indexOf(e.key) === -1){
+                if(((e.key === 'ArrowUp') || (e.key === 'ArrowDown') ) && this.game.keys.indexOf(e.key) === -1){
                     this.game.keys.push(e.key)
                 } else if( e.key === ' ') {
                     this.game.player.shootTop();
@@ -127,20 +127,42 @@ window.addEventListener('load', function() {
     class UI {
         constructor(game){
             this.game = game;
-            this.fontSize = 25;
+            this.fontSize = 30;
             this.family = 'Helvetica';
             this.color = 'white';
         }
         draw(context){
+            // save the state
             context.save();
+            context.shadowOffsetX = 2;
+            context.shadowOffsetY = 2;
+            context.shadowColor = 'black';
             context.fillStyle = this.color;
             context.font = this.fontSize + 'px' + this.fontFamily;
             // score
             context.fillText('Score: ' + this.game.score, 20, 40);
             // ammo
-            for(let i = 0; i < this.game.ammo;i++){
+            for(let i = 0; i < this.game.ammo; i++){
                 context.fillRect(20 + 5 * i, 50, 3, 20);
+            };
+            // game over message
+            if(this.game.gameOver){
+                context.textAlign = 'center';
+                let message1;
+                let message2;
+                if(this.game.score > this.game.winningScore){
+                    message1 = 'You Win';  
+                    message2 = 'Well Done';
+                } else {
+                    message1 = 'you Lose';
+                    message2 = 'Try Again!'
+                }
+                context.font = '50px' + this.fontFamily;
+                context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 40);
+                context.font = '25px' + this.fontFamily;
+                context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 - 40);
             }
+            // restore the state
             context.restore();
         }
        
