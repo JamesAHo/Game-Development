@@ -151,8 +151,8 @@ window.addEventListener('load', function() {
                 let message1;
                 let message2;
                 if(this.game.score > this.game.winningScore){
-                    message1 = 'You Win';  
-                    message2 = 'Well Done';
+                    message1 = 'You Win!';  
+                    message2 = 'Well Done!';
                 } else {
                     message1 = 'you Lose';
                     message2 = 'Try Again!'
@@ -262,5 +262,6 @@ window.addEventListener('load', function() {
         // using existing window objet requestAnimationFrame
         requestAnimationFrame(animation)
     }
+    // initialize animation
     animation(0);
 });
