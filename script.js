@@ -50,7 +50,7 @@ window.addEventListener('load', function() {
         constructor(game){
             this.game = game;
             this.x = this.game.width;
-            this.speedX = Math.random() * -0.8 - 0.2;
+            this.speedX = Math.random() * -0.8 - 0.5;
             this.DeleteParticle = false;
             this.lives = 5;
             this.score = this.lives;
@@ -160,15 +160,16 @@ window.addEventListener('load', function() {
                 context.font = '50px' + this.fontFamily;
                 context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 40);
                 context.font = '25px' + this.fontFamily;
-                context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 - 40);
+                context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 40);
             }
             // restore the state
             context.restore();
         }
        
     }
+    // Gameplay object
     class GamepPlay {
-        constructor(width,height) {
+        constructor(width, height) {
             this.width = width;
             this.height = height;
             // Player instance
