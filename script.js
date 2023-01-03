@@ -103,7 +103,7 @@ window.addEventListener('load', function() {
             this.y = y;
             this.width = 10;
             this.height = 3;
-            this.speed = 0.8;
+            this.speed = 1.2;
             this.DeleteParticle = false;
         }
         update(){
@@ -157,7 +157,7 @@ window.addEventListener('load', function() {
                     message1 = 'You Win!';  
                     message2 = 'Well Done!';
                 } else {
-                    message1 = 'you Lose';
+                    message1 = 'You Lose';
                     message2 = 'Try Again!'
                 }
                 context.font = '50px' + this.fontFamily;
@@ -222,6 +222,7 @@ window.addEventListener('load', function() {
                         if(enemy.lives <= 0){
                             enemy.DeleteParticle = true;
                             this.score += enemy.score;
+                            if(!this.gameOver) this.score += enemy.score;
                             if(this.score > this.winningScore){
                                 this.gameOver = true;
                             }
