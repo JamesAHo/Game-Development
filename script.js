@@ -17,6 +17,7 @@ window.addEventListener('load', function() {
             this.speedY = 0;
             this.maxSpeed = 2;
             this.projectiles = [];
+            this.image = document.getElementById('player')
        }
        // methods
        update(){
