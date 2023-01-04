@@ -17,7 +17,7 @@ window.addEventListener('load', function() {
             this.speedY = 0;
             this.maxSpeed = 2;
             this.projectiles = [];
-            this.image = document.getElementById('player')
+            this.image = document.getElementById('player');
        }
        // methods
        update(){
@@ -34,7 +34,7 @@ window.addEventListener('load', function() {
        draw(context){
             context.fillStyle = 'black';
             context.fillRect(this.x, this.y, this.width, this.height);
-            context.drawImage(this.image, this.x, this.y)
+            context.drawImage(this.image, sx, sy, sw, sh, this.x, this.y, this.width, this.height);
             this.projectiles.forEach(projectile => {
                 projectile.draw(context);
             });
