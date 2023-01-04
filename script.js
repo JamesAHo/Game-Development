@@ -69,7 +69,7 @@ window.addEventListener('load', function() {
             this.maxFrame = 37;
         }
         update(){
-            this.x += this.speedX;
+            this.x += this.speedX - this.game.speed;
             if(this.x + this.width < 0) return this.DeleteParticle = true;
             if(this.frameX < this.maxFrame) {
                 this.frameX++;
@@ -92,6 +92,16 @@ window.addEventListener('load', function() {
             this.y = Math.random() * (this.game.height * 0.9 - this.height);
             this.image = document.getElementById('angler1');
             this.frameY = Math.floor(Math.random() * 3);
+        }
+    }
+    class Angler2 extends Enemy{
+        constructor(game){
+            super(game);
+            this.width = 213;
+            this.height = 165;
+            this.y = Math.random() * (this.game.height * 0.9 - this.height);
+            this.image = document.getElementById('angler2');
+            this.frameY = Math.floor(Math.random() * 2);
         }
     }
     // End of Enemy Section
@@ -249,7 +259,7 @@ window.addEventListener('load', function() {
             this.score = 0;
             this.winningScore = 10;
             this.gameTime = 0;
-            this.timeLimit = 5000;
+            this.timeLimit = 15000;
             this.speed = 1;
             this.debug = true;
 
@@ -308,7 +318,9 @@ window.addEventListener('load', function() {
         }
         // add enemy 
         addEnemy(){
-            this.enemies.push(new Angler1(this));
+            const random = Math.random();
+            if(random < 0.5) this.enemies.push(new Angler1(this));
+            else this.enemies.push(new Angler2(this));
         }
         // check to see if enemy collide with player
         checkCollision(rect1,rect2){
