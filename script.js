@@ -220,7 +220,7 @@ window.addEventListener('load', function() {
                     message2 = 'Well Done!';
                 } else {
                     message1 = 'You Lose';
-                    message2 = 'Try Again!'
+                    message2 = 'Try Again!';
                 }
                 context.font = '50px' + this.fontFamily;
                 context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 40);
